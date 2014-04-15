@@ -59,7 +59,16 @@ var showAnswererScore = function(answererScore) {
 	answererElem.attr('href', answererScore.user.link);
 	answererElem.text(answererScore.user.display_name);
 
-
+/* answerer = result.find('.answerer');
+	answerer.html('<p>Name: <a target="_blank" href=http://stackoverflow.com/users/' + topic.user.user_id + ' >' +
+													topic.user.display_name +
+												'</a>' +
+							'</p>'
+ 	);
+// set the #views for question property in result
+var reputation = result.find('.reputation');
+	reputation.text(topic.user.reputation);
+*/
 
 	result.find('.num-posts').text(answererScore.post_count);
 	result.find('.score').text(answererScore.score);

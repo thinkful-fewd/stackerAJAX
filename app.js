@@ -11,8 +11,8 @@ $(document).ready( function() {
 	//zero out results if previous search has run
 	$('.results').html('');
 	//get the value of the tags the user submitted
-	var tags = $(this).find("input[name='answerers']").val();
-	getInspiration(tags);
+	var tag = $(this).find("input[name='answerers']").val();
+	getInspiration(tag);
 	});
 });
 
@@ -48,27 +48,6 @@ var showQuestion = function(question) {
 
 	return result;
 };
-/*Additonal Feature: This function takes the score object from stackoverview and append the result to the DOM*/
-var showAnswererScore = function(answererScore) {
-
-	//clone our result template code
-	var result = $('.templates .answererScore').clone();
-
-	//Set the answerer properties in result
-	var answererElem = result.find('.answerer a');
-	answererElem.attr('href', answererScore.user.link);
-	answererElem.text(answererScore.user.display_name);
-
-
-
-	result.find('.num-posts').text(answererScore.post_count);
-	result.find('.score').text(answererScore.score);
-
-	return result;
-};
-
-// this function takes the results object from StackOverflow
-// and creates info about search results to be appended to DOM
 var showSearchResults = function(query, resultNum) {
 	var results = resultNum + ' results for <strong>' + query;
 	return results;
@@ -112,31 +91,47 @@ var getUnanswered = function(tags) {
 		$('.search-results').append(errorElem);
 	});
 };
+/*Additonal Feature: This function takes the score object from stackoverview and append the result to the DOM*/
+var showInspiration = function(item) {
+
+	//clone our result template code
+	var result = $('.templates .inspiration').clone();
+	//Set the answerer properties in result
+		result.find('.user a')
+				.attr('href', item.user.link)
+				.text(item.user.display_name);
+	result.find('.post-count').text(item.post_count);
+	result.find('.score').text(item.score);
+
+	return result;
+};
+
+// this function takes the results object from StackOverflow
+// and creates info about search results to be appended to DOM
+
 /*This is the beginning of feature 2 JS code: Request for Inspiration*/
-var getInspiration = function(tags) {
+var getInspiration = function(tag) {
 /*Does this need to be function(tags)? */
+	var url = "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/all-time";
 	var request = {
-							site:'stackoverflow',
+			site:'stackoverflow'
 				};
 	var result = $.ajax({
-		url: "http://api.stackexchange.com/2.2/tags/" + tags + "/top-answerers/all-time",
+		url: url,
 		data: request,
 		dataType:"jsonp", /*What does this mean? Why not just json?*/
-		type: "GET",
-	})
-	.done(function(result){
+		type: "GET"
+	}).done(function(result){
 		/*What is this for? Why do we need to change request:tagged to tags?*/
-		var searchResults = showSearchResults(tags, result.items.length);
+		var searchResults = showSearchResults(tag, result.items.length);
 		$('.search-results').html(searchResults);
 
-		$.each(result.items, function(i, item) {
-			var answererScore = showAnswererScore(item);
-			$(".result").append(answererScore);
+		$.each(result.items, function(index, item) {
+			var inspiration = showInspiration(item);
+			$(".results").append(inspiration);
 		});
-	})
-	.fail(function(jqXHR, error, errorThrown){
-		var errorElem = showError(error);
-		$('.search-results').append(errorElem);
+	}).fail(function(){
+		alert('error');
 	});
 };
 	

@@ -7,10 +7,19 @@ $(document).ready( function() {
 		getUnanswered(tags);
 	});
 //This is the feature 2 doc.ready section; Question: What do you call this part of the project?//	
+<<<<<<< HEAD
 	$('.inspiration-getter').submit( function(e){
 		$('.results').html('');
 		var tag = $(this).find("input[name='answerers']").val();
 		getInspiration(tag);
+=======
+	$('.inspiration-getter').submit(function(event){
+	//zero out results if previous search has run
+	$('.results').html('');
+	//get the value of the tags the user submitted
+	var tag = $(this).find("input[name='answerers']").val();
+	getInspiration(tag);
+>>>>>>> FETCH_HEAD
 	});
 });
 
@@ -46,9 +55,12 @@ var showQuestion = function(question) {
 
 	return result;
 };
+<<<<<<< HEAD
 
 // this function takes the results object from StackOverflow
 // and creates info about search results to be appended to DOM
+=======
+>>>>>>> FETCH_HEAD
 var showSearchResults = function(query, resultNum) {
 	var results = resultNum + ' results for <strong>' + query;
 	return results;
@@ -92,7 +104,26 @@ var getUnanswered = function(tags) {
 		$('.search-results').append(errorElem);
 	});
 };
+/*Additonal Feature: This function takes the score object from stackoverview and append the result to the DOM*/
+var showInspiration = function(item) {
+
+	//clone our result template code
+	var result = $('.templates .inspiration').clone();
+	//Set the answerer properties in result
+		result.find('.user a')
+				.attr('href', item.user.link)
+				.text(item.user.display_name);
+	result.find('.post-count').text(item.post_count);
+	result.find('.score').text(item.score);
+
+	return result;
+};
+
+// this function takes the results object from StackOverflow
+// and creates info about search results to be appended to DOM
+
 /*This is the beginning of feature 2 JS code: Request for Inspiration*/
+<<<<<<< HEAD
 /*Additonal Feature: This function takes the score object from stackoverview and append the result to the DOM*/
 var showInspiration = function(item) {
 	//clone our result template code
@@ -110,14 +141,28 @@ var getInspiration = function(tag) {
 	var url = "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/all-time";
 	var request = {
 					site:'stackoverflow'
+=======
+var getInspiration = function(tag) {
+/*Does this need to be function(tags)? */
+	var url = "http://api.stackexchange.com/2.2/tags/" + tag + "/top-answerers/all-time";
+	var request = {
+			site:'stackoverflow'
+>>>>>>> FETCH_HEAD
 				};
 	var result = $.ajax({
 		url: url,
 		data: request,
+<<<<<<< HEAD
 		dataType: "jsonp",
 		type: "GET"
 	})
 	.done(function(result) {
+=======
+		dataType:"jsonp", /*What does this mean? Why not just json?*/
+		type: "GET"
+	}).done(function(result){
+		/*What is this for? Why do we need to change request:tagged to tags?*/
+>>>>>>> FETCH_HEAD
 		var searchResults = showSearchResults(tag, result.items.length);
 		$('.search-results').html(searchResults);
 
@@ -125,10 +170,8 @@ var getInspiration = function(tag) {
 			var inspiration = showInspiration(item);
 			$(".results").append(inspiration);
 		});
-	})
-	.fail(function(jqXHR, error, errorThrown){
-		var errorElem = showError(error);
-		$('.search-results').append(errorElem);
+	}).fail(function(){
+		alert('error');
 	});
 };
 	

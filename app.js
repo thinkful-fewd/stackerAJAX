@@ -139,10 +139,13 @@ var getInspired = function (inspireSubmit) {
 			var topA = showTopA(value);
 			$('.results').append(topA);
 		}); //end each
-	});//end .done
+	})//end .done
 
-	//.fail();
-	//};
+	.fail(function(jqXHR, error, errorThrown){
+		var errorElem = showError(error);
+		$('.search-results').append(errorElem);
+	}); // end of .fail()
+
 }; //end getInspired
 
 

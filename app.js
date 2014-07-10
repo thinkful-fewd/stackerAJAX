@@ -1,12 +1,23 @@
 $(document).ready( function() {
+	// Get unanswered Questions
 	$('.unanswered-getter').submit( function(event){
+		event.preventDefault();
 		// zero out results if previous search has run
 		$('.results').html('');
 		// get the value of the tags the user submitted
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
 	});
-});
+	// Get top answers for Get Inspired
+	$('.inspiration-getter').submit( function(event){
+		event.preventDefault();
+		// zero out results if previous search has run
+		$('.results').html(" ");
+		var inspireSubmit = $(this).find("input[name='answerers']").val();
+		getInspired(inspireSubmit);
+	});
+
+}); //end ready
 
 // this function takes the question object returned by StackOverflow 
 // and creates new result to be appended to DOM
@@ -35,7 +46,7 @@ var showQuestion = function(question) {
 													question.owner.display_name +
 												'</a>' +
 							'</p>' +
- 							'<p>Reputation: ' + question.owner.reputation + '</p>'
+							'<p>Reputation: ' + question.owner.reputation + '</p>'
 	);
 
 	return result;
@@ -54,6 +65,28 @@ var showError = function(error){
 	var errorElem = $('.templates .error').clone();
 	var errorText = '<p>' + error + '</p>';
 	errorElem.append(errorText);
+};
+
+//this function shows the results of getInspired and will push the top answerers to the html
+
+var showTopA = function(topA) {
+	var result = $('.templates .answers').clone();
+	
+	// insert user name with a link
+	var userNameTag = result.find(".user-name a");
+	userNameTag.text(topA.user.display_name);
+	userNameTag.find(".user-name a").attr("href", topA.user.link);
+
+	// insert profile picture
+	result.find(".userProfile img").attr("src", topA.user.profile_image);
+
+	// insert the number of posts per user
+	result.find(".postCount").text(topA.post_count);
+
+	// insert users score
+	result.find(".score").text(topA.score);
+
+return result;
 };
 
 // takes a string of semi-colon separated tags to be searched
@@ -85,8 +118,34 @@ var getUnanswered = function(tags) {
 	.fail(function(jqXHR, error, errorThrown){
 		var errorElem = showError(error);
 		$('.search-results').append(errorElem);
-	});
-};
+	}); //end unanswered fail
+}; //end getUnanswered
+
+// returns the top answerers for the given input
+var getInspired = function (inspireSubmit) {
+	var parameters = {site:'stackoverflow'};
+
+	var topAnswers = $.ajax({
+		url: "http://api.stackexchange.com/2.2/tags/{" + inspireSubmit + "}/top-answerers/all_time",
+		data: parameters,
+		dataType: "jsonp",
+		type:"GET"
+		})
+	.done(function(topAnswers) {
+		searchResults = showSearchResults(inspireSubmit, topAnswers.items.length);
+
+		$(".search-results").html(searchResults);
+		$.each(topAnswers.items, function(index, value) {
+			var topA = showTopA(value);
+			$('.results').append(topA);
+		}); //end each
+	});//end .done
+
+	//.fail();
+	//};
+}; //end getInspired
+
+
 
 
 

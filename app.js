@@ -54,6 +54,7 @@ var showError = function(error){
 	var errorElem = $('.templates .error').clone();
 	var errorText = '<p>' + error + '</p>';
 	errorElem.append(errorText);
+	return errorElem;
 };
 
 // takes a string of semi-colon separated tags to be searched
@@ -66,7 +67,7 @@ var getUnanswered = function(tags) {
 								order: 'desc',
 								sort: 'creation'};
 	
-	var result = $.ajax({
+	$.ajax({
 		url: "http://api.stackexchange.com/2.2/questions/unanswered",
 		data: request,
 		dataType: "jsonp",

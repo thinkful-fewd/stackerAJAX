@@ -88,5 +88,22 @@ var getUnanswered = function(tags) {
 	});
 };
 
+var getTopAnswerers = function(tag) {
 
+	var request = {tag: tag,
+					site: 'stackoverflow',
+					period: 'all_time'
+				};
+
+	var result = $.ajax({
+		url: 'http://api.stackexchange.com/2.2/tags/{tag}/top-answerers',
+		data: request,
+		dataType: 'jsonp',
+		type: 'GET',
+	});
+
+	// print out
+	console.log(result);
+
+};
 

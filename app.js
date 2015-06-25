@@ -6,6 +6,13 @@ $(document).ready( function() {
 		var tags = $(this).find("input[name='tags']").val();
 		getUnanswered(tags);
 	});
+
+	$('.inspiration-getter').submit( function(event) {
+		$('.results').html('');
+		var tag = $(this).find("input[name='answerers']").val();
+		console.log('submitted');
+		getTopAnswerers(tag);
+	});
 });
 
 // this function takes the question object returned by StackOverflow 
@@ -78,6 +85,8 @@ var getUnanswered = function(tags) {
 		$('.search-results').html(searchResults);
 
 		$.each(result.items, function(i, item) {
+			console.log(i);
+			console.log(item);
 			var question = showQuestion(item);
 			$('.results').append(question);
 		});
@@ -89,4 +98,54 @@ var getUnanswered = function(tags) {
 };
 
 
+var getTopAnswerers = function(tag) {
+
+	var url = 'http://api.stackexchange.com/2.2/tags/' + tag + '/top-answerers/all_time?site=stackoverflow';
+
+	// one call, that's all
+	$.getJSON(url, function(data) {
+		console.log('Success');
+		//console.log(data);
+		var items = data.items;
+		console.log(items);
+		users = [];
+		console.log('Returned ' + items.length + ' answerers: ');
+		
+		// append 'users' object to users array
+		for (i = 0; i < items.length; i++) {
+			showAnswererResults(items[i]);
+		};
+
+	});
+
+};
+
+var showAnswererResults = function(answerer) {
+
+	// clone
+	console.log('cloning...');
+	var results = $('.templates .answerer').clone();
+
+	// set image
+	var image = results.find('.profile-image img');
+	image.attr('src', answerer.user.profile_image);
+
+	// answerer display name
+	console.log('Display Name: ' + answerer.user.display_name);
+	var displayName = results.find('.answerer a');
+	displayName.attr('href', answerer.user.link);
+	displayName.text(answerer.user.display_name);
+
+	// post count
+	console.log('Post Count: ' + answerer.post_count);
+	var postCount = results.find('.post-count');
+	postCount.text(answerer.post_count);
+
+	// reputation
+	console.log('Reputation: ' + answerer.user.reputation);
+	var reputation = results.find('.reputation');
+	reputation.text(answerer.user.reputation);
+	
+	$('.results').append(results);
+};
 

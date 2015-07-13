@@ -1,0 +1,18 @@
+stackerAJAX
+===========
+
+Learn jQuery AJAX Patterns
+In the previous lesson, we built a Hello World simple hello world app, and learned a bunch of background information about HTTP and REST and working with jQuery’s AJAX api. In this lesson, we’re going to code up a slightly more realistic application that will give you more practice making AJAX calls and updating the DOM based on the response data you get.
+
+This lesson is comprised of two assignments over which you’ll build an interface where users can enter a coding topic they’re interested in and see unanswered questions for that topic on StackOverflow. StackOverflow is the central hub for programming related knowledge and troubleshooting about specific issues, and it’s a place where you can also give back. StackOverflow has a reputation point system, and you get points for asking questions others find valuable and giving good answers to questions. As you build reputation points, you unlock new privileges. It can be very addicting. As a newcomer to StackOverflow, it can also be rather difficult to initially start building reputation points. You don’t want to put up a bunch of low quality questions, cause you’ll get dowvoted. And because the response time on SO is frequently so quick, even if you can find a question you might be able to answer, it’s often the case that it has already been answered.
+
+The app we’re building will solve part of that problem. We’ll be creating a simple app that works with the StackExchange API (FYI, StackExchange is the umbrella organization of which StackOverflow is a part). We’re making it easy for users to immediately find open questions about topics they’re interested in and know about. Our app will help users pounce on new questions before anyone else can. Specifically, it will let us see how recent the question is, its title, and the reputation points of the person who asked it. As a beginner, you’re probably best suited to answer new questions by other beginners (who will also have low reputation).
+
+We’ll walk you through using AJAX to build that functionality. We’ll get you to this point, and then we’ll ask you to use the design pattern we introduce to query for unanswered questions to query for the top answerers for tags you’re interested in. Put differently, we’ll make it easy for users to find StackOverflow reputation inspiration. Note that the emphasis in the assignment will be decidely on implementing the basic functionality for our app. We are not going to be concerned about design or user experience. Even if we had full designs for this app, you typically want to focus first on “connecting the thread” when you’re coding up a web app on scratch. This means writing the minimal code to set up all your basic components and get them talking to each other. After you’ve connected the thread, then it’s time to drill down on perfecting the UI.
+
+One final comment about this app we’re building. It’s actually possible to get the same information we’re providing through the StackOverflow site itself, although it is not immediately obvious how to do it. The non-originality of our app is actually not a bad thing, and maybe even a good one. After all, web apps are by their nature about taking content that already exists elsewhere and combining it together into a unique interface on a page. Front end web development is oftentimes about designing and coding up interfaces that make it easy for and (hopefully) obvious for users to do things with unoriginal content.
+
+Goals:
+- Get practice building an app that updates DOM with data retrieved through AJAX requests.
+- Get to know the jQuery AJAX api better
+- Learn the process of “connecting the thread”

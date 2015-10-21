@@ -99,13 +99,10 @@ var getUnanswered = function(tags) {
 var getInspiration = function(tags) {
 	
 	// the parameters we need to pass in our request to StackOverflow's API
-	var request = {tagged: tags,
-								site: 'stackoverflow',
-								order: 'desc',
-								sort: 'creation'};
+	var request = {site: 'stackoverflow',};
 	
 	var result = $.ajax({
-		url: "http://api.stackexchange.com/2.2/questions/unanswered",
+		url: "http://api.stackexchange.com/2.2/tags/" + tags + "/top-answerers/all_time",
 		data: request,
 		dataType: "jsonp",
 		type: "GET",
